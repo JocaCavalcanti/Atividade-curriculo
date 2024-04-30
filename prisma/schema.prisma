@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://ynkapajv:Juw0JC8_vREARs1GEYdMqv31GYbofGJO@motty.db.elephantsql.com/ynkapajv"
+}
+
+model Curriculo {
+  id                  Int           @id @default(autoincrement())
+  nomeCompleto        String
+  email               String
+  telefone            String?
+  endereco            Endereco[]
+  educacao            Educacao[]
+  experiencia         Experiencia[]
+  habilidades         Habilidade[]
+  tecnologiasFavoritas String[]
+}
+
+model Endereco {
+  id            Int      @id @default(autoincrement())
+  rua           String
+  cidade        String
+  estado        String
+  codigoPostal  String
+  pais          String
+  curriculo     Curriculo?  @relation(fields: [curriculoId], references: [id])
+  curriculoId   Int?
+}
+
+model Educacao {
+  id            Int      @id @default(autoincrement())
+  instituicao   String
+  curso         String
+  dataInicio    DateTime
+  dataConclusao DateTime?
+  curriculo     Curriculo  @relation(fields: [curriculoId], references: [id])
+  curriculoId   Int
+}
+
+model Experiencia {
+  id           Int      @id @default(autoincrement())
+  empresa      String
+  cargo        String
+  descricao    String
+  dataInicio   DateTime
+  dataFim      DateTime?
+  curriculo    Curriculo  @relation(fields: [curriculoId], references: [id])
+  curriculoId  Int
+}
+
+model Habilidade {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  curriculo    Curriculo  @relation(fields: [curriculoId], references: [id])
+  curriculoId  Int
+}
